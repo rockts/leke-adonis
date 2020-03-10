@@ -43,3 +43,5 @@ Route
     Route.get('posts', () => 'Manage posts')
 })
   .prefix('admin')
+
+Route.any('*', ({ view }) => view.render('welcome'))
