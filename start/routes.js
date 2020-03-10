@@ -19,6 +19,8 @@ const Route = use("Route");
 Route.on("/").render("welcome");
 
 Route.resource("posts", "PostController");
-// .except(["index"]);
-// .only(["index", "show"]);
+// .except(["index"])
+// .only(["index", "show"])
 // .apiOnly();
+
+Route.get("/list-of-users", () => "List of users.").as("users.index");
