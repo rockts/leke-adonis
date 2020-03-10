@@ -36,3 +36,10 @@ Route.get("/users", ({ request }) => {
     `;
   }
 }).formats(["json", "html"], true);
+
+Route
+  .group(() => {
+    Route.get('users', () => 'Manage users')
+    Route.get('posts', () => 'Manage posts')
+})
+  .prefix('admin')
