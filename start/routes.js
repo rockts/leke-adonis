@@ -27,8 +27,15 @@ Route.on('/').render('welcome')
 // Route.post('/posts', ({ request }) => request.only(['title', 'content']))
 // Route.post('/posts', ({ request }) => request.collect(['title', 'content']))
 
-Route.get('/posts', ({ request, response }) => {
-  response.cookie('theme', 'dark')
-  response.clearCookie('theme')
-  return request.cookie('theme', 'light')
+// Route.get('/posts', ({ request, response }) => {
+//   response.cookie('theme', 'dark')
+//   response.clearCookie('theme')
+//   return request.cookie('theme', 'light')
+// })
+
+Route.get('/posts', ({ response }) => {
+  // response.send('List of posts.')
+  return {
+    title: 'List of posts.'
+  }
 })
