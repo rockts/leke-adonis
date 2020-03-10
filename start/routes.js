@@ -33,9 +33,18 @@ Route.on('/').render('welcome')
 //   return request.cookie('theme', 'light')
 // })
 
-Route.get('/posts', ({ response }) => {
-  // response.send('List of posts.')
-  return {
-    title: 'List of posts.'
-  }
+const  delay = (data, time) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(data)
+    }, time)
+  })
+}
+
+Route.get('/posts', async ({ response }) => {
+  const data = await delay(
+    'List of posts.',
+    3000
+  )
+  return data
 })
