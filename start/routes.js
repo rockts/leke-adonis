@@ -24,3 +24,15 @@ Route.resource("posts", "PostController");
 // .apiOnly();
 
 Route.get("/list-of-users", () => "List of users.").as("users.index");
+
+Route.get("/users", ({ request }) => {
+  switch (request.format()) {
+    case "json":
+      return [{ name: "gaopeng" }, { name: "leke" }];
+    default:
+      return `
+      - gaopeng
+      - leke
+    `;
+  }
+}).formats(["json", "html"], true);
