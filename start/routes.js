@@ -25,4 +25,6 @@ Route.on('/').render('welcome')
 // Route.post('/posts', ({ request }) => request.input('status', 'draft'))
 
 // Route.post('/posts', ({ request }) => request.only(['title', 'content']))
-Route.post('/posts', ({ request }) => request.collect(['title', 'content']))
+// Route.post('/posts', ({ request }) => request.collect(['title', 'content']))
+
+Route.get('/posts', ({ request }) => request.header('user-agent'))
