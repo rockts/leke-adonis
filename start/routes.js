@@ -28,6 +28,7 @@ Route.on('/').render('welcome')
 // Route.post('/posts', ({ request }) => request.collect(['title', 'content']))
 
 Route.get('/posts', ({ request, response }) => {
-  response.type('text/plain')
-  return '<h1>List of posts</h1>'
+  response.cookie('theme', 'dark')
+  response.clearCookie('theme')
+  return request.cookie('theme', 'light')
 })
