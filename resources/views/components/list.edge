@@ -5,12 +5,15 @@ style="
   @if(!$loop.last && border)
   border-bottom: 1px solid {{ borderColer || '#eee' }}
   @endif
-  ">
+  "
+>
   <small>
     {{ $loop.index + 1 }}.
-
   </small>
   {{ entity.title }}: {{ entity.content }}
-
 </div>
 @endeach
+
+@yield($slot.notes)
+  <small>Put some notes here.</small>
+@endyield
