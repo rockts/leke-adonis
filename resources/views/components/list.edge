@@ -1,0 +1,16 @@
+@each(entity in entities)
+<div
+style="
+  padding: 4px;
+  @if(!$loop.last && border)
+  border-bottom: 1px solid {{ borderColer || '#eee' }}
+  @endif
+  ">
+  <small>
+    {{ $loop.index + 1 }}.
+
+  </small>
+  {{ entity.title }}: {{ entity.content }}
+
+</div>
+@endeach
