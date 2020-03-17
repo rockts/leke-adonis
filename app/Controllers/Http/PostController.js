@@ -30,6 +30,7 @@ class PostController {
    * @param {View} ctx.view
    */
   async create ({ request, response, view }) {
+    return view.render('post.create')
   }
 
   /**
