@@ -1,6 +1,7 @@
 'use strict'
 
 const Database = use('Database')
+const Post = use('App/Models/Post')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -20,6 +21,10 @@ class PostController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    const posts = await Post.all()
+    console.log(posts);
+    return posts
+
   }
 
   /**
