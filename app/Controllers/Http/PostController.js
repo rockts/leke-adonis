@@ -22,8 +22,9 @@ class PostController {
    */
   async index ({ request, response, view }) {
     const posts = await Post.all()
-    console.log(posts);
-    return posts
+    // console.log(posts);
+    // return posts
+    return view.render('post.index', { posts: posts.toJSON() })
 
   }
 
