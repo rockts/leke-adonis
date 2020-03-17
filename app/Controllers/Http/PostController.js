@@ -46,7 +46,8 @@ class PostController {
   async store ({ request, response }) {
     const newPost = request.only(['title', 'content'])
     const postID = await Database.insert(newPost).into('posts')
-    console.log('postID', postID);
+    console.log('postID', postID)
+    return response.redirect(`/posts/${ postID[0] }`)
   }
 
   /**
@@ -59,6 +60,12 @@ class PostController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    const post = await Database
+     .from('posts')
+     .where('id', params.id)
+     .first()
+
+    return view.render('post.show', { post })
   }
 
   /**
