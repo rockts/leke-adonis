@@ -78,6 +78,12 @@ class PostController {
    * @param {View} ctx.view
    */
   async edit ({ params, request, response, view }) {
+    const post = await Database
+      .from('posts')
+      .where('id', params.id)
+      .first()
+
+    return view.render('post.edit', { post })
   }
 
   /**
@@ -89,6 +95,11 @@ class PostController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const updatedPost = request.only(['title', 'content'])
+    await Database
+      .table('posts')
+      .where('id', params.id)
+      .update(updatedPost)
   }
 
   /**
