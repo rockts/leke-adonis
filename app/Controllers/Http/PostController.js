@@ -111,6 +111,12 @@ class PostController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    await Database
+      .table('posts')
+      .where('id', params.id)
+      .delete()
+
+    return 'success'
   }
 }
 
