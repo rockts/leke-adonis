@@ -179,7 +179,13 @@ class PostController {
     //   .delete()
 
     const post = await Post.find(params.id)
-    post.delete()
+
+    try {
+      await post.tags().detach()
+      await post.delete()
+    } catch (error) {
+      console.log(error)
+    }
 
     return 'success'
   }
