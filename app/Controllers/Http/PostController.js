@@ -198,7 +198,7 @@ class PostController {
 
     session.flash({
       type: 'primary',
-      message: `Post updated. <a href="${ Route.url('PostControll.show', { id: post.id }) }" class="alert-link">Preview post.</a>`
+      message: `Post updated. <a href="${ Route.url('PostController.show', { id: post.id }) }" class="alert-link">Preview post.</a>`
     })
 
     return response.redirect('back')
