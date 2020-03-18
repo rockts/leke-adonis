@@ -5,6 +5,7 @@ const Post = use('App/Models/Post')
 const User = use('App/Models/User')
 const Tag = use('App/Models/Tag')
 const { validateAll } = use('Validator')
+const Route = use('Route')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -179,7 +180,7 @@ class PostController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+  async update ({ params, request, response, session }) {
     const { title, content, user_id, tags } = request.all()
     // await Database
     //   .table('posts')
@@ -194,6 +195,13 @@ class PostController {
     await post.user().associate(user)
 
     await post.tags().sync(tags)
+
+    session.flash({
+      type: 'primary',
+      message: `Post updated. <a href="${ Route.url('PostControll.show', { id: post.id }) }" class="alert-link">Preview post.</a>`
+    })
+
+    return response.redirect('back')
   }
 
   /**
