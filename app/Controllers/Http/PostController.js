@@ -3,6 +3,7 @@
 const Database = use('Database')
 const Post = use('App/Models/Post')
 const User = use('App/Models/User')
+const Tag = use('App/Models/Tag')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -48,7 +49,8 @@ class PostController {
    */
   async create ({ request, response, view }) {
     const users = await User.all()
-    return view.render('post.create', { users: users.toJSON() })
+    const tags = await Tag.all()
+    return view.render('post.create', { users: users.toJSON(), tags: tags.toJSON() })
   }
 
   /**
@@ -69,7 +71,7 @@ class PostController {
     const post = await user
       .posts()
       .create(newPost)
-      
+
     return response.redirect(`/posts/${ post.id }`)
   }
 
