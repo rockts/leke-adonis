@@ -1,6 +1,7 @@
 'use strict'
 
 const User = use('App/Models/User')
+const { validate } = use('Validator')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -44,6 +45,20 @@ class UserController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const rules = {
+      username: 'required|unique:users',
+      email: 'required|email|unique:users',
+      password: 'required|min:6|max:30'
+    }
+
+    const validation = await validate(request.all(), rules)
+
+    console.log(validation);
+
+    if (validation.fails()) {
+      return
+    }
+
     const newUser = request.only(['username', 'email', 'password'])
     const user = await User.create(newUser)
 
