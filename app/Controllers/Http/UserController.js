@@ -44,7 +44,7 @@ class UserController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request, response, session }) {
     const rules = {
       username: 'required|unique:users',
       email: 'required|email|unique:users',
@@ -56,7 +56,11 @@ class UserController {
     console.log(validation);
 
     if (validation.fails()) {
-      return
+      session
+        .withErrors(validation.messages())
+        .flashAll()
+
+      return response.redirect('back')
     }
 
     const newUser = request.only(['username', 'email', 'password'])
