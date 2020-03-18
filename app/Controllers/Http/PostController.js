@@ -138,10 +138,23 @@ class PostController {
     //   .where('id', params.id)
     //   .first()
 
-    const post = await Post.findOrFail(params.id)
+    const _post = await Post.findOrFail(params.id)
 
     const _users = await User.all()
     const users = _users.toJSON()
+    const _tags = await Tag.all()
+    const tags = _tags.toJSON()
+    await _post.load('tags')
+    const post = _post.toJSON()
+    const postTagIds = post.tags.map(tag => tag.id)
+
+     const tagItems = tags.map((tag) => {
+       if (postTagIds.includes(tag.id)) {
+         tag.checked = true
+       }
+
+       return tag
+     })
 
     const userItems = users.map((user) => {
       if (user.id === post.user_id) {
@@ -152,8 +165,9 @@ class PostController {
     })
 
     return view.render('post.edit', {
-      post: post.toJSON(),
-      users: userItems
+      post,
+      users: userItems,
+      tags: tagItems
      })
   }
 
