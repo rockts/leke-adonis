@@ -2,6 +2,7 @@
 
 const Database = use('Database')
 const Post = use('App/Models/Post')
+const User = use('App/Models/User')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -46,7 +47,8 @@ class PostController {
    * @param {View} ctx.view
    */
   async create ({ request, response, view }) {
-    return view.render('post.create')
+    const users = await User.all()
+    return view.render('post.create', { users: users.toJSON() })
   }
 
   /**
