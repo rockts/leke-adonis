@@ -5,6 +5,8 @@ package-lock.json
 # Adonis directory for storing tmp files
 tmp
 
+# uploads
+public/uploads
 # Environment variables, never commit this file
 .env
 
