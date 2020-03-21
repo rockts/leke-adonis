@@ -120,6 +120,9 @@ class FileController {
    * @param {View} ctx.view
    */
   async edit ({ params, request, response, view }) {
+    const file = await File.find(params.id)
+
+    return view.render('file.edit', { file })
   }
 
   /**
