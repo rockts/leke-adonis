@@ -20,6 +20,10 @@ const Profile = use('App/Models/Profile')
 Route.on('/').render('welcome')
 
 Route
+  .get('files/:id/download', 'FileController.download')
+  .as('files.download')
+
+Route
   .get('upload', 'FileController.create')
   .as('upload')
 Route.resource('files', 'FileController')
