@@ -3,6 +3,7 @@
 const Helpers = use('Helpers')
 const File = use('App/Models/File')
 const filesize = use('filesize')
+const Drive = use('Drive')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
