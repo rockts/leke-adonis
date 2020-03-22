@@ -1,7 +1,13 @@
 @layout('layouts.main')
 
 @section('content')
-  <div class="container">
+  <div class="container my-5">
+    @if(flashMessage('message'))
+      @!component('components.alert', {
+        type: [flashMessage('type')],
+        message: [flashMessage('message')]
+      })
+    @endif
     <h1 class="mt-5 mb-4">{{ post.title }}</h1>
     <div>
       {{ post.content }}
@@ -17,11 +23,11 @@
       </div>
     @endif
     <div class="border-top py-4">
-      <form action="{{ route('share.email', { id: post.id, type: 'post' }) }}" method="post">
-        {{ csrfField() }}
-        <button class="btn btn-light text-muted" type="submit">
-          <i class="fas fa-envelope"></i>
-        </button>
+      <form action="{{ route('share.email', { id: post.id, type: 'post'}) }}" method="POST">
+         {{ csrfField() }}
+         <button class="btn btn-light text-muted" type="submit">
+           <i class="fas fa-envelope"></i>
+         </button>
       </form>
     </div>
   </div>
