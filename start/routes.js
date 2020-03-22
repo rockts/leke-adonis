@@ -54,7 +54,8 @@ Route
 Route
   .resource('posts', 'PostController')
   .middleware(new Map([
-    [['create', 'store', 'edit', 'update', 'destroy'], ['auth']]
+    [['create', 'store', 'edit', 'update', 'destroy'], ['auth']],
+    [['update', 'destroy', 'edit'], ['own']]
   ]))
 
 
