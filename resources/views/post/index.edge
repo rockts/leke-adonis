@@ -16,5 +16,14 @@
         </span>
       </div>
     @endeach
+
+    @component('components.pagination', {
+      total,
+      perPage,
+      page,
+      lastPage
+    })
+
+    @endcomponent
   </div>
 @endsection
