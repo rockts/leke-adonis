@@ -59,4 +59,17 @@ hooks.after.providersBooted(() => {
   Exception.handle('InvalidSessionException', async (error, { response }) => {
     return response.route('login')
   })
+
+  Exception.handle('PermissionCheckException', async (error, { session, response }) => {
+    session
+      .flash({
+        type: 'danger',
+        message: 'You have to no permission to do this.'
+      })
+
+    await session.commit()
+
+    return response.redirect('back')
+  })
+
 })

@@ -1,6 +1,7 @@
 'use strict'
 
 const Post = use('App/Models/Post')
+const PermissionCheckException = use('App/Exceptions/PermissionCheckException')
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -25,15 +26,8 @@ class Own {
     const own = entity.user_id === auth.user.id
 
     if (!own && auth.user.id !== 1) {
-      session
-        .flash({
-          type: 'danger',
-          message: 'You have no permission to do this.'
-        })
+      throw new PermissionCheckException('Permission Check exception.', 403)
 
-      await session.commit()
-
-      return response.redirect('back')
     }
 
     await next()
