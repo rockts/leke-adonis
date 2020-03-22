@@ -140,7 +140,7 @@ class PostController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async edit ({ params, request, response, view }) {
+  async edit ({ params, request, response, view, auth }) {
     // const post = await Database
     //   .from('posts')
     //   .where('id', params.id)
@@ -152,7 +152,7 @@ class PostController {
     const users = _users.toJSON()
     const _tags = await Tag.all()
     const tags = _tags.toJSON()
-    await _post.load('tags')
+    await _post.loadMany(['tags', 'user'])
     const post = _post.toJSON()
     const postTagIds = post.tags.map(tag => tag.id)
 
@@ -164,13 +164,25 @@ class PostController {
        return tag
      })
 
-    const userItems = users.map((user) => {
-      if (user.id === post.user_id) {
-        user.checked = true
-      }
+     let userItems = []
 
-      return user
-    })
+     userItems = [
+       {
+         ...post.user,
+         checked: true
+       }
+     ]
+
+     if (auth.user.id === 1) {
+       userItems = users.map((user) => {
+         if (user.id === post.user_id) {
+           user.checked = true
+         }
+
+         return user
+       })
+
+     }
 
     return view.render('post.edit', {
       post,
@@ -187,7 +199,7 @@ class PostController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response, session }) {
+  async update ({ params, request, response, session, auth }) {
     const { title, content, user_id, tags } = request.all()
     // await Database
     //   .table('posts')
@@ -198,8 +210,10 @@ class PostController {
     post.merge({ title, content })
     await post.save()
 
-    const user = await User.find(user_id)
-    await post.user().associate(user)
+    if (auth.user.id == 1) {
+      const user = await User.find(user_id)
+      await post.user().associate(user)
+    }
 
     await post.tags().sync(tags)
 
