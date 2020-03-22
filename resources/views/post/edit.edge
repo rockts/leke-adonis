@@ -1,9 +1,8 @@
 @layout('layouts.main')
 
 @section('content')
-
+  @set('PageTitle', 'Edit_Posts')
   <h3 class="mt-5 mb-4">Edit Post</h3>
-
   <form action="/posts/{{ post.id }}?_method=PUT" method="post">
     @!component('components.form.input', {
       name: 'title',

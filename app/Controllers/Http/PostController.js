@@ -26,11 +26,12 @@ class PostController {
    */
   async index ({ request, response, view }) {
     const page = request.input('page')
-    const perPage = 3
+    const perPage = 10
 
 
     const posts = await Post
       .query()
+      .orderBy('updated_at', 'desc')
       .with('user', (builder) => {
         builder.select('id', 'username')
       })
