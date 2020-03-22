@@ -9,10 +9,11 @@ class Own {
    * @param {Request} ctx.request
    * @param {Function} next
    */
-  async handle ({ request }, next) {
+  async handle ({ request }, next, args) {
 
     console.log('hello middleware')
-    
+    console.log('args:', args)
+
     await next()
   }
 }
