@@ -25,13 +25,17 @@ class PostController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    const page = request.input('page')
+    const perPage = 3
+
+
     const posts = await Post
       .query()
       .with('user', (builder) => {
         builder.select('id', 'username')
       })
       .with('user.profile')
-      .paginate(1, 3)
+      .paginate(page, perPage)
 
     return posts
 
