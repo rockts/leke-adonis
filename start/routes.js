@@ -51,7 +51,13 @@ Route
 Route
   .get('users/create', ({ response }) => response.route('signup'))
 
-Route.resource('posts', 'PostController')
+Route
+  .resource('posts', 'PostController')
+  .middleware(new Map([
+    [['create', 'store', 'edit', 'update', 'destroy'], ['auth']]
+  ]))
+
+
 Route.resource('users', 'UserController')
 Route.resource('tags', 'TagController')
 
