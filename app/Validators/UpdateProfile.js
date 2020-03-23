@@ -19,6 +19,7 @@ class UpdateProfile {
       'username.required': 'Username can\'t be blank',
       'username.unique': 'Username is already taken',
       'email.required': 'Email can\'t be blank',
+      'email.email': 'Email is invalid',
       'email.unique': 'Email is already taken',
       'github.unique': 'Github account is used by someone else'
     }
