@@ -1,84 +1,23 @@
 'use strict'
 
 const User = use('App/Models/User')
-const { validate, validateAll } = use('Validator')
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
-/**
- * Resourceful controller for interacting with users
- */
 class UserController {
-  /**
-   * Show a list of all users.
-   * GET users
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async index ({ request, response, view }) {
+  async index () {
   }
 
-  /**
-   * Render a form to be used for creating a new user.
-   * GET users/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+  async create ({ view }) {
     return view.render('user.create')
   }
 
-  /**
-   * Create/save a new user.
-   * POST users
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async store ({ request, response, session }) {
-    const rules = {
-      username: 'required|unique:users',
-      email: 'required|email|unique:users',
-      password: 'required|min:6|max:30'
-    }
-
-    const validation = await validateAll(request.all(), rules)
-
-    console.log(validation);
-
-    if (validation.fails()) {
-      session
-        .withErrors(validation.messages())
-        .flashAll()
-
-      return response.redirect('back')
-    }
-
+  async store ({ request, session, response }) {
     const newUser = request.only(['username', 'email', 'password'])
     const user = await User.create(newUser)
 
     return response.redirect(`/users/${ user.id }`)
   }
 
-  /**
-   * Display a single user.
-   * GET users/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show ({ params, request, response, view }) {
+  async show ({ params, view, request }) {
     const pageNumber = request.input('page', 1)
     const pageSize = 20
 
@@ -112,38 +51,13 @@ class UserController {
     // }
   }
 
-  /**
-   * Render a form to update an existing user.
-   * GET users/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
+  async edit () {
   }
 
-  /**
-   * Update user details.
-   * PUT or PATCH users/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update ({ params, request, response }) {
+  async update () {
   }
 
-  /**
-   * Delete a user with id.
-   * DELETE users/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy ({ params, request, response }) {
+  async destroy () {
   }
 }
 

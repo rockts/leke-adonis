@@ -4,30 +4,12 @@ const Database = use('Database')
 const Post = use('App/Models/Post')
 const User = use('App/Models/User')
 const Tag = use('App/Models/Tag')
-const { validateAll } = use('Validator')
 const Route = use('Route')
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
-/**
- * Resourceful controller for interacting with posts
- */
 class PostController {
-  /**
-   * Show a list of all posts.
-   * GET posts
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async index ({ request, response, view }) {
+  async index ({ view, request }) {
     const page = request.input('page')
-    const perPage = 10
-
+    const perPage = 20
 
     const posts = await Post
       .query()
@@ -41,58 +23,25 @@ class PostController {
     return view.render('post.index', { ...posts.toJSON() })
   }
 
-  /**
-   * Render a form to be used for creating a new post.
-   * GET posts/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view, auth }) {
+  async create ({ view, auth }) {
     const userItems = [
       {
         ...auth.user.toJSON(),
         checked: true
       }
     ]
+
     // const users = await User.all()
     const tags = await Tag.all()
     return view.render('post.create', { users: userItems, tags: tags.toJSON() })
   }
 
-  /**
-   * Create/save a new post.
-   * POST posts
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async store ({ request, response, session, auth }) {
-    const rules = {
-      title: 'required',
-      content: 'required'
-    }
-
-    const validation = await validateAll(request.all(), rules)
-
-    if (validation.fails()) {
-      session
-        .withErrors(validation.messages())
-        .flashAll()
-
-      return response.redirect('back')
-    }
-
-
-
     const newPost = request.only(['title', 'content'])
     const tags = request.input('tags')
     // const postID = await Database.insert(newPost).into('posts')
-    // console.log('postID', postID)
-    // const  post = await Post.create(newPost)
+    // console.log('postID: ', postID)
+    // const post = await Post.create(newPost)
 
     // const user = await User.find(request.input('user_id'))
     const post = await auth.user
@@ -106,20 +55,11 @@ class PostController {
     return response.route('posts.show', { id: post.id })
   }
 
-  /**
-   * Display a single post.
-   * GET posts/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show ({ params, request, response, view }) {
+  async show ({ view, params }) {
     // const post = await Database
-    //  .from('posts')
-    //  .where('id', params.id)
-    //  .first()
+    //   .from('posts')
+    //   .where('id', params.id)
+    //   .first()
 
     const post = await Post.findOrFail(params.id)
 
@@ -131,16 +71,7 @@ class PostController {
     return view.render('post.show', { post, tags: tags.toJSON() })
   }
 
-  /**
-   * Render a form to update an existing post.
-   * GET posts/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view, auth }) {
+  async edit ({ view, params, auth }) {
     // const post = await Database
     //   .from('posts')
     //   .where('id', params.id)
@@ -156,50 +87,41 @@ class PostController {
     const post = _post.toJSON()
     const postTagIds = post.tags.map(tag => tag.id)
 
-     const tagItems = tags.map((tag) => {
-       if (postTagIds.includes(tag.id)) {
-         tag.checked = true
-       }
+    const tagItems = tags.map((tag) => {
+      if (postTagIds.includes(tag.id)) {
+        tag.checked = true
+      }
 
-       return tag
-     })
+      return tag
+    })
 
-     let userItems = []
+    let userItems = []
 
-     userItems = [
-       {
-         ...post.user,
-         checked: true
-       }
-     ]
+    userItems = [
+      {
+        ...post.user,
+        checked: true
+      }
+    ]
 
-     if (auth.user.id === 1) {
-       userItems = users.map((user) => {
-         if (user.id === post.user_id) {
-           user.checked = true
-         }
+    if (auth.user.id === 1) {
+      userItems = users.map((user) => {
+        if (user.id === post.user_id) {
+          user.checked = true
+        }
 
-         return user
-       })
-
-     }
+        return user
+      })
+    }
 
     return view.render('post.edit', {
       post,
       users: userItems,
       tags: tagItems
-     })
+    })
   }
 
-  /**
-   * Update post details.
-   * PUT or PATCH posts/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update ({ params, request, response, session, auth }) {
+  async update ({ request, params, session, response, auth }) {
     const { title, content, user_id, tags } = request.all()
     // await Database
     //   .table('posts')
@@ -225,15 +147,7 @@ class PostController {
     return response.redirect('back')
   }
 
-  /**
-   * Delete a post with id.
-   * DELETE posts/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy ({ params, request, response }) {
+  async destroy ({ request, params }) {
     // await Database
     //   .table('posts')
     //   .where('id', params.id)

@@ -9,11 +9,10 @@
 | routes for different URL's and bind Controller actions to them.
 |
 | A complete guide on routing is available here.
-| http://adonisjs.com/docs/4.1/routing
+| http://adonisjs.com/guides/routing
 |
 */
 
-/** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 const Profile = use('App/Models/Profile')
 
@@ -31,7 +30,6 @@ Route
       .post('password', 'PasswordController.update')
       .as('password.update')
       .validator('UpdatePassword')
-
   })
   .prefix('settings')
   .middleware(['auth'])
@@ -74,9 +72,16 @@ Route
     [['create', 'store', 'edit', 'update', 'destroy'], ['auth']],
     [['update', 'destroy', 'edit'], ['own:post']]
   ]))
+  .validator(new Map([
+    [['posts.store', 'posts.update'], ['StorePost']]
+  ]))
 
+Route
+  .resource('users', 'UserController')
+  .validator(new Map([
+    [['users.store'], ['StoreUser']]
+  ]))
 
-Route.resource('users', 'UserController')
 Route.resource('tags', 'TagController')
 
 Route.get('profiles/:id', async ({ params }) => {
