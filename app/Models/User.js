@@ -5,8 +5,26 @@ const Hash = use('Hash')
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
+const randomstring = use('randomstring')
 
 class User extends Model {
+  verification () {
+    return this.hasOne('App/Models/Verification')
+  }
+
+  async generateVerification () {
+    const token = randomstring.generate({
+      length: 6,
+      charset: 'numeric'
+    })
+
+    const verification = await this.verification().create({
+      token
+    })
+
+    return verification
+  }
+
   profile () {
     return this.hasOne('App/Models/Profile')
   }
