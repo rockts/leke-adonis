@@ -1,5 +1,8 @@
 'use strict'
 
+const { validateAll } = use('Validator')
+const Hash = use('Hash')
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -76,7 +79,25 @@ class PasswordController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+  async update ({ params, request, response, session, auth }) {
+    const rules = {
+      old_password: `required|hashVerified:${ auth.user.password }`
+    }
+
+    const messages = {
+      'old_password.hashVerified': 'Password is invalid'
+    }
+
+    const validation  = await validateAll(request.all(), rules, messages)
+
+    if (validation.fails()) {
+      session
+        .withErrors(validation.messages())
+        .flashAll()
+
+      return response.redirect('back')
+    }
+
   }
 
   /**
