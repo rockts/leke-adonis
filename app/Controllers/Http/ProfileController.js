@@ -64,8 +64,9 @@ class ProfileController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async edit ({ params, request, response, view }) {
-    return view.render('user.setting.profile.edit')
+  async edit ({ params, request, response, view, auth }) {
+    await auth.user.load('profile')
+    return view.render('user.setting.profile.edit', { user: auth.user.toJSON() })
   }
 
   /**
