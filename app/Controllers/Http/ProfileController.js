@@ -68,7 +68,7 @@ class ProfileController {
    */
   async edit ({ params, request, response, view, auth }) {
     await auth.user.load('profile')
-    return view.render('user.setting.profile.edit', { user: auth.user.toJSON() })
+    return view.render('user.settings.profile.edit', { user: auth.user.toJSON() })
   }
 
   /**
