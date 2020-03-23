@@ -79,9 +79,16 @@ class ProfileController {
    */
   async update ({ params, request, response, auth, session }) {
     const { username, email, github } = request.all()
-    auth.user.merge({ username, email })
-    await auth.user.save()
-    await auth.user.profile().update({ github })
+    const user = auth.user
+
+    if (!user.is_verified) {
+      user.merge({ username, email })
+    } else {
+      user.merge({ username })
+    }
+
+    await user.save()
+    await user.profile().update({ github })
 
     session
       .flash({
