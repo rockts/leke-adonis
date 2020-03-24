@@ -1,5 +1,11 @@
 'use strict'
 
+const Formats = use('Antl/Formats')
+
+Formats.add('longWeekDay', {
+  weekday: 'long'
+})
+
 class AntlDemoController {
   async demo ({ view, antl, locale }) {
     return view.render('demo.antl', {
@@ -27,13 +33,15 @@ class AntlDemoController {
         // timeZoneName: 'long',
         // hour12: false
       // })
-      message: antl.formatMessage('demo.message', {
-        // count: 0
-         // count: 1
-         count: 3
-      })
+      // message: antl.formatMessage('demo.message', {
+      //   // count: 0
+      //    // count: 1
+      //    count: 3
+      // })
+      message: antl.formatMessage('demo.message', { today: new Date() }, [
+        Formats.pass('longWeekDay', 'date')
+      ])
     })
-
   }
 }
 
