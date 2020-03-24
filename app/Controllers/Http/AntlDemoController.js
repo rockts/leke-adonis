@@ -17,15 +17,18 @@ class AntlDemoController {
       //   currencyDisplay: 'name'
       // }),
       // message: antl.formatAmount(30, 'usd')
-      message: antl.formatDate(new Date(), {
+      // message: antl.formatDate(new Date(), {
         // weekday: 'long',
         // weekday: 'short',
         // month: 'long'
         // month: 'short'
         // month: 'numeric'
         // month: '2-digit'
-        timeZoneName: 'long',
-        hour12: false 
+        // timeZoneName: 'long',
+        // hour12: false
+      // })
+      message: antl.formatMessage('demo.message', {
+        gender: 'female'
       })
     })
 
