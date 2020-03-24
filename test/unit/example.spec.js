@@ -22,17 +22,17 @@ test('demo test: isAbove', async ({ assert }) => {
 })
 
 before(async () => {
-  console.log('before test');
+  // console.log('before test');
 })
 
 beforeEach(async () => {
-  console.log('beforeEach test');
+  // console.log('beforeEach test');
 })
 
 after(async () => {
-  console.log('after test');
+  // console.log('after test');
 })
 
 afterEach(async () => {
-  console.log('afterEach test');
+  // console.log('afterEach test');
 })
