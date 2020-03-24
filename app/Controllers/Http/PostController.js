@@ -58,6 +58,12 @@ class PostController {
       .tags()
       .attach(tags)
 
+    const format = request.accepts(['json', 'html'])
+
+    if (format === 'json') {
+      return response.send(posts)
+    }
+
     return response.route('posts.show', { id: post.id })
   }
 
