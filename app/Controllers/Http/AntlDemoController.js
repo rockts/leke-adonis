@@ -28,7 +28,9 @@ class AntlDemoController {
         // hour12: false
       // })
       message: antl.formatMessage('demo.message', {
-        gender: 'female'
+        // count: 0
+         // count: 1
+         count: 3
       })
     })
 
