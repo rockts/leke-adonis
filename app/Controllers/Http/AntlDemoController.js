@@ -16,7 +16,17 @@ class AntlDemoController {
       //   currency: 'cny',
       //   currencyDisplay: 'name'
       // }),
-      message: antl.formatAmount(30, 'usd')
+      // message: antl.formatAmount(30, 'usd')
+      message: antl.formatDate(new Date(), {
+        // weekday: 'long',
+        // weekday: 'short',
+        // month: 'long'
+        // month: 'short'
+        // month: 'numeric'
+        // month: '2-digit'
+        timeZoneName: 'long',
+        hour12: false 
+      })
     })
 
   }
