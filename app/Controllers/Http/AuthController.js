@@ -7,7 +7,7 @@ class AuthController {
     await auth.logout()
     return response.redirect('back')
   }
-  
+
   async login ({ view, auth, response }) {
     try {
       await auth.check()
@@ -40,6 +40,13 @@ class AuthController {
     await auth.attempt(username ,password)
 
     const user = await auth.getUser()
+
+    const redirectUrl = session.get('redirectUrl')
+
+    if (redirectUrl) {
+      session.forget('redirectUrl')
+      return response.redirect(redirectUrl)
+    }
 
     return response.route('UserController.show', { id: user.id })
   }
